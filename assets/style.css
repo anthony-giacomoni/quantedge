@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif !important;
+    background-color: #0f0f1a !important;
+    color: #e2e8f0 !important;
+}
+
+#MainMenu, footer, header { visibility: hidden; }
+.stDeployButton { display: none; }
+
+.main .block-container {
+    padding: 2rem 2.5rem !important;
+    max-width: 1400px !important;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #111120 !important;
+    border-right: 1px solid #1e1e35 !important;
+}
+[data-testid="stSidebar"] * { color: #64748b !important; }
+[data-testid="stSidebar"] .stMarkdown h2 {
+    color: #f1f5f9 !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+}
+[data-testid="stSidebar"] hr { border-color: #16162a !important; }
+[data-testid="stSidebar"] label { font-size: 0.82rem !important; }
+
+[data-testid="stMetric"] {
+    background: #13131f !important;
+    border: 1px solid #1e1e35 !important;
+    border-radius: 6px !important;
+    padding: 1rem 1.25rem !important;
+}
+[data-testid="stMetricLabel"] {
+    font-size: 0.65rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    color: #334155 !important;
+}
+[data-testid="stMetricValue"] {
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    color: #f1f5f9 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+}
+[data-testid="stMetricDelta"] {
+    font-size: 0.72rem !important;
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+h1 {
+    font-size: 1.4rem !important;
+    font-weight: 600 !important;
+    color: #f1f5f9 !important;
+    letter-spacing: -0.02em !important;
+    border-bottom: 1px solid #16162a !important;
+    padding-bottom: 0.75rem !important;
+    margin-bottom: 0.5rem !important;
+}
+h2, h3 {
+    font-size: 0.7rem !important;
+    font-weight: 600 !important;
+    color: #4a5568 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.12em !important;
+    margin-top: 2rem !important;
+    margin-bottom: 0.75rem !important;
+}
+
+.stCaption, [data-testid="stCaptionContainer"] {
+    color: #1e293b !important;
+    font-size: 0.72rem !important;
+}
+
+hr { border-color: #16162a !important; margin: 1.5rem 0 !important; }
+
+.stButton > button {
+    background: #0ea5e9 !important;
+    color: #080810 !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.06em !important;
+    text-transform: uppercase !important;
+    padding: 0.5rem 1.5rem !important;
+}
+.stButton > button:hover { background: #38bdf8 !important; }
+
+[data-testid="stDataFrame"] {
+    border: 1px solid #1e1e35 !important;
+    border-radius: 6px !important;
+}
+[data-testid="stDataFrame"] th {
+    background: #13131f !important;
+    color: #334155 !important;
+    font-size: 0.65rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.08em !important;
+    font-weight: 600 !important;
+}
+[data-testid="stDataFrame"] td {
+    color: #94a3b8 !important;
+    font-family: 'JetBrains Mono', monospace !important;
+    font-size: 0.78rem !important;
+    background: #0f0f1a !important;
+}
+
+[data-testid="stExpander"] {
+    background: #13131f !important;
+    border: 1px solid #1e1e35 !important;
+    border-radius: 6px !important;
+}
+[data-testid="stExpander"] summary {
+    color: #334155 !important;
+    font-size: 0.75rem !important;
+    font-weight: 500 !important;
+}
+
+[data-testid="stSelectbox"] > div,
+[data-testid="stMultiSelect"] > div {
+    background: #13131f !important;
+    border: 1px solid #1e1e35 !important;
+    border-radius: 4px !important;
+}
+
+[data-testid="stTextInput"] input,
+[data-testid="stTextArea"] textarea,
+[data-testid="stNumberInput"] input {
+    background: #13131f !important;
+    border: 1px solid #1e1e35 !important;
+    color: #e2e8f0 !important;
+    border-radius: 4px !important;
+    font-family: 'JetBrains Mono', monospace !important;
+}
+
+[data-testid="stAlert"] {
+    border-radius: 4px !important;
+    border-left: 2px solid !important;
+    background: #13131f !important;
+    font-size: 0.78rem !important;
+}
+
+[data-testid="stFileUploader"] {
+    background: #13131f !important;
+    border: 1px dashed #16162a !important;
+    border-radius: 6px !important;
+}
