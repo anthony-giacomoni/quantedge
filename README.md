@@ -42,6 +42,14 @@ strengths overlap.
 slightly different snapshots in time. For a personal research tool this is
 an acceptable trade-off; it would not be for a production system.
 
+## Preview
+
+<p align="center">
+  <img src="news.png" width="800" alt="QuantEdge — News page">
+</p>
+
+<p align="center"><em>Rolling macro calendar with market-moving event highlights</em></p>
+
 ## Stack
 
 Python 3.8 · Streamlit · EODHD API · yfinance · Anthropic Claude API ·
