@@ -7,6 +7,10 @@ notes, and monitor source-labelled upcoming market catalysts.
 It is a research dashboard, not an execution engine and not a production
 trading system.
 
+## Interface Preview
+
+![QuantEdge — News & Macro Intelligence](news.png)
+
 ## Features
 
 - **Trading** — bundled strategy-tagged personal trade analytics dataset, realised P&L, cumulative realised P&L,
