@@ -1,82 +1,61 @@
-# QuantEdge — Guide de démarrage (Anaconda / Spyder)
+# QuantEdge — Démarrage local
 
-## Étape 1 — Copier le projet
+## Prérequis
 
-Crée un dossier `quantedge` quelque part sur ton ordinateur (ex: Bureau, Documents).
-Copie-y tous les fichiers du projet en respectant exactement cette structure :
+- Python **3.11 ou 3.12**
+- Git optionnel
+- Clés API personnelles dans `.env` pour EODHD / Anthropic
 
-```
-quantedge/
-├── app.py
-├── config.py
-├── requirements.txt
-├── DEMARRAGE.md
-├── data/              ← dossier vide, créé automatiquement
-├── modules/
-│   ├── __init__.py
-│   └── portfolio.py
-└── utils/
-    ├── __init__.py
-    ├── db.py
-    ├── market_data.py
-    └── seed_trades.py
+## Installation
+
+```bash
+cd ~/Downloads/quantedge
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements-dev.txt
+cp .env.example .env
 ```
 
-## Étape 2 — Installer les bibliothèques
+Renseigner ensuite les clés dans `.env`. Ce fichier est ignoré par Git.
 
-Ouvre le **Terminal** sur ton Mac :
-- Appuie sur **Cmd + Espace**, tape "Terminal", appuie sur Entrée
+## Vérification
 
-Dans le Terminal, tape cette commande et appuie sur Entrée :
+```bash
+python -m compileall -q .
+pytest -q
 ```
-pip install streamlit yfinance pandas plotly anthropic python-dotenv
-```
 
-Attends que tout s'installe (1-2 minutes). Tu verras défiler du texte, c'est normal.
+## Lancement
 
-## Étape 3 — Lancer le dashboard
-
-Toujours dans le Terminal, navigue vers ton dossier.
-Par exemple si tu l'as mis sur le Bureau :
-```
-cd ~/Desktop/quantedge
-```
-(ou `cd ~/Documents/quantedge` selon où tu l'as mis)
-
-Puis lance :
-```
+```bash
 streamlit run app.py
 ```
 
-Une page web va s'ouvrir automatiquement sur `http://localhost:8501` avec ton dashboard !
+## Données locales et mode démo
 
-## Ce que tu vas voir
+- `data/quantedge.db` est créé localement et alimenté par le seed de **27 trades taggés stratégie** : 25 clôturés et 2 ouverts.
+- Les classeurs personnels `data/simu_invest.xlsm` / `data/simu_invest.xlsx` sont privés et ignorés par Git; les uploads sont validés avant remplacement.
+- En son absence, l'application utilise `examples/simu_invest_demo.xlsx`, clairement identifié comme dataset de démonstration.
+- Le seed stratégie contient 24 trades gagnants et 1 perdant parmi les 25 clôturés, pour **+2 210,61 €** de P&L réalisé sur ce dataset.
 
-- **KPIs** : P&L total, win rate, meilleur trade, positions ouvertes
-- **Equity curve** : ta progression dans le temps
-- **P&L par trade** : barres vertes/rouges
-- **Répartition sectorielle** : donut chart
-- **Tableau complet** : tes 28 trades filtrables
+## Important
 
-## Tes stats calculées automatiquement
+QuantEdge est un dashboard de recherche/analytics. Il ne réalise aucune exécution automatique et ne revendique ni flux streaming ni P&L temps réel. Les cours sont rafraîchis à la demande à partir des dernières données disponibles.
 
-| Métrique | Valeur |
-|---|---|
-| Trades totaux | 28 |
-| Trades clôturés | 26 |
-| Positions ouvertes | 2 (Netflix, Aon) |
-| **Win rate** | **96%** (24/25 trades comptabilisés) |
-| **P&L cumulé clôturé** | **+2 210€** |
-| Meilleur trade | +527.5€ (Veeva) |
-| Pire trade | -95.76€ (UNH long) |
-| Gain moyen | +96.10€ |
-| Profit factor | 24.02x |
-| Durée moy. trade | 12.6 jours |
+## News & Catalysts
 
-## En cas de problème
+- Les calendriers EODHD sont utilisés uniquement si la clé locale possède l’entitlement correspondant.
+- En cas de 403, le macro US/EU bascule vers les calendriers officiels BLS / Federal Reserve / ECB. Les autres régions sélectionnées restent explicitement indisponibles sans EODHD.
+- Les earnings/news de watchlist peuvent basculer vers yfinance avec cache et circuit-breaker sur HTTP 429.
+- Aucun calendrier futur manuel n’est livré avec le projet et aucune date de remplacement n’est inventée.
 
-**"streamlit n'est pas reconnu"** → relance le Terminal et réinstalle : `pip install streamlit`
 
-**"Module not found"** → vérifie que tu es bien dans le dossier quantedge (`cd ~/Desktop/quantedge`)
+## Export public
 
-**Page blanche** → attends 10-15 secondes, les prix se chargent depuis internet (yfinance)
+Ne jamais zipper directement le dossier local `quantedge/` : il contient volontairement `.env`, `.venv` et `data/`. Construire l’artefact public via l’allowlist :
+
+```bash
+python scripts/build_public_release.py /tmp/quantedge_public
+python /tmp/quantedge_public/scripts/validate_public_repo.py /tmp/quantedge_public
+```

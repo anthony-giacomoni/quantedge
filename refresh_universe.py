@@ -12,10 +12,8 @@
 #  plan) pour un grand nombre de tickers US, et les stocke dans
 #  data/quantedge.db (table universe_cache) avec la date du jour.
 #
-#  L'app Streamlit (page Opportunities) lit ensuite ce cache pour un
-#  filtre instantané, sans refaire ces appels réseau à chaque clic.
-#  Seuls les quelques candidats qui passent le filtre sont revérifiés
-#  en direct (prix, drawdown, 5d return) au moment du scan dans l'app.
+#  Ce cache est un utilitaire de pré-filtrage pour les scans larges/offline.
+#  Le screener principal peut fonctionner sans lui sur sa watchlist intégrée.
 # ============================================================
 
 import sys
@@ -26,8 +24,14 @@ from datetime import date
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+from utils.runtime import configure_runtime
+configure_runtime()
+
+from dotenv import load_dotenv
+load_dotenv()
+
 from utils.eodhd import get_exchange_tickers, get_52w_stats
-from utils.market_data import get_fundamentals
+from utils.market_data import get_fundamentals, normalize_yfinance_ticker, canonical_listing_ticker
 import utils.eodhd as eodhd_module
 from utils.db import init_database, save_universe_snapshot, clear_old_snapshots
 from config import DB_PATH
@@ -53,11 +57,12 @@ def main(max_tickers: int, exchange: str):
     start = time.time()
 
     for i, ticker in enumerate(candidates):
-        fund = get_fundamentals(ticker)
+        yf_ticker = normalize_yfinance_ticker(ticker)
+        fund = get_fundamentals(yf_ticker)
         if fund and fund.get("market_cap"):
             price_stats = get_52w_stats(ticker) or {}
             rows.append({
-                "ticker":      ticker,
+                "ticker":      canonical_listing_ticker(ticker),
                 "name":        fund.get("name", ticker),
                 "sector":      fund.get("sector"),
                 "industry":    fund.get("industry"),

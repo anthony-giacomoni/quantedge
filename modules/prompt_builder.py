@@ -1,31 +1,46 @@
 # ============================================================
 #  QuantEdge — Prompt Builder
-#  Institutional-grade prompt templates
+#  Research prompt templates with explicit data-integrity constraints
 # ============================================================
 
 from typing import Dict, List
+import re
 from datetime import datetime
 import pytz
+
+
+DATA_INTEGRITY_GUARDRAIL = """
+
+═══ DATA INTEGRITY RULES ═══
+- This prompt does not provide a general-purpose live market/news feed.
+- Treat explicitly supplied figures as inputs. Treat them as source-labelled when a provider/source is shown; source-labelled does not mean independently verified.
+- Do not invent current prices, earnings dates, macro releases, contracts, filings, fund positioning, options activity, COT data or other time-sensitive facts.
+- If the requested conclusion requires current information that is not supplied, DO NOT fabricate a ranking or recommendation. Return a concise missing-data checklist instead.
+- Any valuation/peer assumptions must be clearly labelled as estimates, and do not calculate a DCF from invented financial-statement inputs.
+"""
 
 PROMPT_TEMPLATES = {
 
     "Trade Setup — Opportunity Scan": {
-        "description": "Institutional scan — best expected value / volatility setups today",
+        "description": "Rule-based opportunity framework using only supplied candidate data",
         "template": """Date: {date}
 
 You are a senior equity analyst at a global macro hedge fund covering energy, semiconductors, defence and healthcare.
 
-Identify 3 high-conviction trade setups with the best expected value / volatility ratio.
+Evaluate up to 3 candidate trade setups from the data supplied below. If no candidate-specific data is supplied, return only the inputs required to run the scan; do not invent tickers or current market facts.
+
+SUPPLIED CANDIDATE DATA (user-supplied unless a provider/source is explicitly shown):
+{context}
 
 ENTRY CRITERIA (all must be met):
 • No +4% move on the day or over the last 5 sessions (avoid chasing momentum)
-• Dated catalyst within 3 weeks: earnings, guidance update, regulatory decision, sector event
-• OR material news not yet reflected in price (information asymmetry)
+• A dated catalyst may be used only if it is supplied with an explicit source/date in the input data
+• OR a material thesis explicitly supported by the supplied data; do not invent current news
 • Position size: €1,000–3,000 | Full exit on target, no pyramiding
 • Exclude: pre-revenue biotech, FDA binary events as sole catalyst
 
 FOR EACH SETUP:
-1. Ticker + current price (verify in real time)
+1. Ticker + latest available price (use only a supplied/source-labelled price; otherwise mark N/A)
 2. Entry / Stop / Target with % distances
 3. Risk/Reward ratio (minimum 2.5:1)
 4. Estimated holding period
@@ -46,17 +61,19 @@ You are a sell-side equity analyst. Perform a rapid valuation analysis on {ticke
 
 Current market data:
 - Price: {price}
-- ATH correction: {drawdown}
-- 5-day return: {ret_5d}
+- 5Y-high correction: {drawdown}
+- 5-session return: {ret_5d}
 - Short interest: {short_pct}
+- Quote source/timestamp: {quote_source} / {quote_timestamp}
+- History source/as-of: {history_source} / {history_as_of}
+- Fundamentals source: {fundamentals_source}
 
 VALUATION FRAMEWORK:
 
-1. NORMALISED FCF ESTIMATE
-- Estimate normalised free cash flow for next 12 months (strip one-offs)
-- Apply sector-appropriate WACC
-- Terminal growth rate assumption (justify vs GDP + sector growth)
-- → Implied intrinsic value per share (DCF)
+1. NORMALISED FCF / DCF INPUT CHECK
+- Use supplied FCF, debt/cash, share-count and forecast inputs only.
+- If those inputs are not supplied, list the missing inputs and mark DCF fair value unavailable.
+- Do not manufacture a WACC, terminal growth rate or forward cash flow from the market-data snapshot alone.
 
 2. COMPARABLE MULTIPLES
 - EV/EBITDA vs sector median (LTM + NTM)
@@ -87,7 +104,12 @@ One paragraph on the key factor the consensus is underweighting — be specific.
 
 You are a senior commodities strategist with coverage of oil, gas and power markets.
 
-Provide a structured energy sector view with actionable trade implications:
+Use only the supplied current observations below for time-sensitive claims. If they are missing, identify what data is required rather than supplying current levels from memory.
+
+SUPPLIED CURRENT OBSERVATIONS (user-supplied unless sourced):
+{context}
+
+Provide a structured energy-sector framework with trade implications:
 
 1. CRUDE OIL (Brent / WTI)
 - Current level, technical structure (support/resistance)
@@ -123,7 +145,12 @@ For each: ticker, thesis in 2 sentences, entry/stop/target, catalyst.""",
 
 You are a defence & aerospace analyst.
 
-Provide a structured sector view with trade implications:
+Use only the supplied current observations below for time-sensitive claims. If they are missing, identify what data is required rather than supplying current facts from memory.
+
+SUPPLIED CURRENT OBSERVATIONS (user-supplied unless sourced):
+{context}
+
+Provide a structured sector framework with trade implications:
 
 1. BUDGET LANDSCAPE
 - NATO 2% GDP target: current compliance by country
@@ -154,6 +181,8 @@ Ticker, thesis, entry/stop/target, catalyst + timing.""",
         "template": """Date: {date}. Pre-entry due diligence on {ticker}.
 
 I am considering entering {ticker} ({name}) at {price}.
+Data provenance: quote {quote_source} at {quote_timestamp}; history {history_source} as of {history_as_of}; fundamentals {fundamentals_source}.
+Additional user-supplied context (not independently verified unless sourced): {context}
 
 Answer each section in under 100 words:
 
@@ -163,14 +192,14 @@ Any structural issue that invalidates the trade today? (debt covenant breach, di
 2. EVENT RISK
 Any binary event in the next 14 days that could gap the stock against me? (earnings, FDA, legal ruling, index rebalancing)
 
-3. INSTITUTIONAL POSITIONING
-What are large funds doing? Any recent 13F changes, notable short positions, unusual options activity?
+3. POSITIONING DATA
+If recent 13F, short-position or options data is explicitly supplied, assess it. Otherwise mark positioning unavailable; do not infer what large funds are doing.
 
 4. TECHNICAL STRUCTURE
-Is price at a meaningful level (support, VWAP, moving average confluence) or in no-man's land?
+Assess only technical levels explicitly supplied in the prompt/context. If VWAP, moving averages or support/resistance observations are not supplied, mark this section unavailable.
 
 5. BETTER ALTERNATIVE
-Is there a superior risk/reward in the same sector right now?
+Compare peers only if peer observations are explicitly supplied. Otherwise state that a same-sector alternative cannot be ranked from the supplied data.
 
 6. VERDICT
 Go / No-go in one sentence. If No-go, suggest the trigger that would make it a Go.""",
@@ -203,7 +232,7 @@ Maximum 3 points. Be precise — avoid generic answers.
 Two concrete rules to apply to future similar setups.
 
 6. PATTERN RECOGNITION
-Does this trade fit a recurring pattern in my track record? If yes, what is the pattern and how can I size it more aggressively?""",
+A single trade is not enough to establish a recurring pattern. If no multi-trade history is explicitly supplied, state that pattern recognition and sizing conclusions are unavailable. If a historical sample is supplied, describe the evidence and uncertainty; do not recommend increasing size solely from one trade.""",
     },
 }
 
@@ -213,8 +242,11 @@ def fill_template(template: str, variables: Dict) -> str:
     variables["date"] = now.strftime("%A %d %B %Y — %H:%M") + " Paris time"
     result = template
     for key, value in variables.items():
-        result = result.replace(f"{{{key}}}", str(value) if value else "N/A")
-    return result
+        result = result.replace(f"{{{key}}}", "N/A" if value is None or value == "" else str(value))
+    # Never send unresolved template placeholders to the model: an absent input
+    # is data-unavailable, not an invitation to infer a value.
+    result = re.sub(r"\{[A-Za-z_][A-Za-z0-9_]*\}", "N/A", result)
+    return result + DATA_INTEGRITY_GUARDRAIL
 
 
 def get_template_names() -> List[str]:

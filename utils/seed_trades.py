@@ -1,6 +1,6 @@
 # ============================================================
-#  QuantEdge — Chargement initial du track record d'Anthony
-#  29 trades réels (2025-2026)
+#  QuantEdge — Chargement du dataset de trades taggés stratégie
+#  27 trades réels (2025-2026)
 #  À exécuter UNE SEULE FOIS : python utils/seed_trades.py
 # ============================================================
 
@@ -19,8 +19,8 @@ TRADES = [
         "pnl":         56.42,
         "invested":    501.00,
         "status":      "CLOSED",
-        "sector":      "Energie",
-        "notes":       "Uranium Energy Corp — correction ATH + catalyseur sectoriel",
+        "sector":      "Energy",
+        "notes":       "Uranium Energy Corp — correction vs recent high + catalyseur sectoriel",
     },
     # ── TRADE 2 ─────────────────────────────────────────────
     {
@@ -35,7 +35,9 @@ TRADES = [
         "invested":    1001.00,
         "status":      "CLOSED",
         "sector":      "ETFs & Indices",
-        "notes":       "Russell 2000 small cap",
+        "notes":       "Russell 2000 exposure — IWM is the reference/underlying symbol; recorded broker marks are not asserted to be IWM exchange execution prices.",
+        "instrument_type": "WRAPPER",
+        "marking_ticker": None,
     },
     # ── TRADE 3 ─────────────────────────────────────────────
     {
@@ -49,12 +51,12 @@ TRADES = [
         "pnl":         41.23,
         "invested":    1001.00,
         "status":      "CLOSED",
-        "sector":      "Healthcare Tech",
+        "sector":      "Consumer",
         "notes":       "Estee Lauder — rebond sur correction",
     },
     # ── TRADE 4 ─────────────────────────────────────────────
     {
-        "ticker":      "SIE.DE",
+        "ticker":      "ENR.DE",
         "direction":   "LONG",
         "qty":         None,
         "entry_price": 93.08,
@@ -64,7 +66,7 @@ TRADES = [
         "pnl":         53.01,
         "invested":    2001.00,
         "status":      "CLOSED",
-        "sector":      "Energie",
+        "sector":      "Energy",
         "notes":       "Siemens Energy x1",
     },
     # ── TRADE 5 ─────────────────────────────────────────────
@@ -79,8 +81,8 @@ TRADES = [
         "pnl":         -95.76,
         "invested":    4000.18,
         "status":      "CLOSED",
-        "sector":      "Healthcare Tech",
-        "notes":       "UnitedHealth Group long — seule vraie perte du track record",
+        "sector":      "Healthcare",
+        "notes":       "UnitedHealth Group long — seule perte du dataset stratégie",
     },
     # ── TRADE 6 ─────────────────────────────────────────────
     {
@@ -94,8 +96,10 @@ TRADES = [
         "pnl":         46.00,
         "invested":    131.00,
         "status":      "CLOSED",
-        "sector":      "Healthcare Tech",
-        "notes":       "UnitedHealth Group SHORT x7.16 — recovery immédiate après la perte long",
+        "sector":      "Healthcare",
+        "notes":       "UnitedHealth Group — bearish leveraged exposure x7.16; UNH is the reference/underlying ticker",
+        "instrument_type": "WRAPPER",
+        "marking_ticker": None,
     },
     # ── TRADE 7 ─────────────────────────────────────────────
     {
@@ -109,8 +113,10 @@ TRADES = [
         "pnl":         15.94,
         "invested":    1001.00,
         "status":      "CLOSED",
-        "sector":      "Energie",
-        "notes":       "Brent crude oil",
+        "sector":      "Energy",
+        "notes":       "Brent crude exposure — BZ=F is the reference/underlying symbol; recorded broker marks may belong to the traded wrapper/product.",
+        "instrument_type": "WRAPPER",
+        "marking_ticker": None,
     },
     # ── TRADE 8 ─────────────────────────────────────────────
     {
@@ -124,7 +130,7 @@ TRADES = [
         "pnl":         131.20,
         "invested":    3217.00,
         "status":      "CLOSED",
-        "sector":      "Energie",
+        "sector":      "Energy",
         "notes":       "MSCI Europe Energy",
     },
     # ── TRADE 9 ─────────────────────────────────────────────
@@ -139,7 +145,7 @@ TRADES = [
         "pnl":         80.28,
         "invested":    2001.00,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x1",
     },
     # ── TRADE 10 ────────────────────────────────────────────
@@ -154,7 +160,7 @@ TRADES = [
         "pnl":         71.24,
         "invested":    2179.40,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x2 — 14 actions",
     },
     # ── TRADE 11 ────────────────────────────────────────────
@@ -169,7 +175,7 @@ TRADES = [
         "pnl":         13.70,
         "invested":    2379.10,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x3 — 15 actions",
     },
     # ── TRADE 12 ────────────────────────────────────────────
@@ -184,12 +190,12 @@ TRADES = [
         "pnl":         39.88,
         "invested":    986.12,
         "status":      "CLOSED",
-        "sector":      "Autre",
+        "sector":      "Consumer",
         "notes":       "SEB — 20 actions",
     },
     # ── TRADE 13 ────────────────────────────────────────────
     {
-        "ticker":      "SIE.DE",
+        "ticker":      "ENR.DE",
         "direction":   "LONG",
         "qty":         16,
         "entry_price": 127.95,
@@ -199,7 +205,7 @@ TRADES = [
         "pnl":         103.80,
         "invested":    2047.20,
         "status":      "CLOSED",
-        "sector":      "Energie",
+        "sector":      "Energy",
         "notes":       "Siemens Energy x2 — 16 actions",
     },
     # ── TRADE 14 ────────────────────────────────────────────
@@ -214,7 +220,7 @@ TRADES = [
         "pnl":         54.00,
         "invested":    2546.28,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x4 — 16 actions",
     },
     # ── TRADE 15 ────────────────────────────────────────────
@@ -229,7 +235,7 @@ TRADES = [
         "pnl":         122.44,
         "invested":    2599.96,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x5 — 17 actions",
     },
     # ── TRADE 16 ────────────────────────────────────────────
@@ -245,7 +251,7 @@ TRADES = [
         "pnl":         254.26,
         "invested":    4762.34,  # 2573.44 + 2188.9
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x6 — double position : 17 actions (151.31→156.8) + 15 actions (145.86→156.8)",
     },
     # ── TRADE 17 ────────────────────────────────────────────
@@ -260,7 +266,7 @@ TRADES = [
         "pnl":         66.80,
         "invested":    2235.80,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "MSCI Global Semiconductors — 200 actions",
     },
     # ── TRADE 18 ────────────────────────────────────────────
@@ -275,7 +281,7 @@ TRADES = [
         "pnl":         19.00,
         "invested":    3399.00,
         "status":      "CLOSED",
-        "sector":      "Défense",
+        "sector":      "Defence",
         "notes":       "Rheinmetall — 2 actions",
     },
     # ── TRADE 19 ────────────────────────────────────────────
@@ -290,8 +296,10 @@ TRADES = [
         "pnl":         10.50,
         "invested":    3692.50,
         "status":      "CLOSED",
-        "sector":      "Energie",
-        "notes":       "S&P US Energy Select Sector — 100 actions",
+        "sector":      "Energy",
+        "notes":       "US energy-sector exposure — XLE is the reference/underlying symbol; recorded broker marks may belong to the traded wrapper/product.",
+        "instrument_type": "WRAPPER",
+        "marking_ticker": None,
     },
     # ── TRADE 20 ────────────────────────────────────────────
     {
@@ -305,7 +313,7 @@ TRADES = [
         "pnl":         35.10,
         "invested":    3827.90,
         "status":      "CLOSED",
-        "sector":      "Défense",
+        "sector":      "Defence",
         "notes":       "Lockheed Martin — 7 actions",
     },
     # ── TRADE 21 ────────────────────────────────────────────
@@ -320,7 +328,7 @@ TRADES = [
         "pnl":         195.00,
         "invested":    3819.00,
         "status":      "CLOSED",
-        "sector":      "Semiconducteurs",
+        "sector":      "Semiconductors",
         "notes":       "Nvidia x7 — 25 actions",
     },
     # ── TRADE 22 ────────────────────────────────────────────
@@ -335,8 +343,8 @@ TRADES = [
         "pnl":         527.50,
         "invested":    4330.00,
         "status":      "CLOSED",
-        "sector":      "Healthcare Tech",
-        "notes":       "Veeva Systems — 30 actions. Meilleur trade clôturé du track record.",
+        "sector":      "Healthcare",
+        "notes":       "Veeva Systems — 30 actions. Meilleur trade clôturé du dataset stratégie.",
     },
     # ── TRADE 23 — OUVERT ────────────────────────────────────
     {
@@ -350,11 +358,10 @@ TRADES = [
         "pnl":         None,
         "invested":    3958.50,
         "status":      "OPEN",
-        "sector":      "Tech",
-        "notes":       "Netflix — 50 actions. Position ouverte.",
+        "sector":      "Communication Services",
+        "notes":       "Netflix — 50 shares. Open cash-equity position; ticker is the traded/reference equity.",
     },
     # ── TRADE 24 ────────────────────────────────────────────
-    # PayPal x1 supprimé : stop loss déclenché par frais cachés, non représentatif
     {
         "ticker":      "PYPL",
         "direction":   "LONG",
@@ -366,10 +373,10 @@ TRADES = [
         "pnl":         134.25,
         "invested":    1959.00,
         "status":      "CLOSED",
-        "sector":      "Tech",
-        "notes":       "PayPal x2 — rebond confirmé",
+        "sector":      "Financials",
+        "notes":       "PayPal x2 — rebound trade; recorded broker marks may be EUR-converted execution values.",
     },
-    # ── TRADE 26 ────────────────────────────────────────────
+    # ── TRADE 25 ────────────────────────────────────────────
     {
         "ticker":      "STLA",
         "direction":   "LONG",
@@ -381,10 +388,10 @@ TRADES = [
         "pnl":         117.40,
         "invested":    2005.00,
         "status":      "CLOSED",
-        "sector":      "Autre",
+        "sector":      "Consumer",
         "notes":       "Stellantis — 400 actions",
     },
-    # ── TRADE 27 ────────────────────────────────────────────
+    # ── TRADE 26 ────────────────────────────────────────────
     {
         "ticker":      "ZS",
         "direction":   "LONG",
@@ -396,10 +403,10 @@ TRADES = [
         "pnl":         101.84,
         "invested":    2978.04,
         "status":      "CLOSED",
-        "sector":      "Tech",
+        "sector":      "Technology",
         "notes":       "Zscaler — 22 actions",
     },
-    # ── TRADE 28 — OUVERT ────────────────────────────────────
+    # ── TRADE 27 — OUVERT ────────────────────────────────────
     {
         "ticker":      "AON",
         "direction":   "LONG",
@@ -411,8 +418,8 @@ TRADES = [
         "pnl":         None,
         "invested":    3136.00,
         "status":      "OPEN",
-        "sector":      "Finance",
-        "notes":       "Aon — 10 actions. Position ouverte.",
+        "sector":      "Financials",
+        "notes":       "Aon — 10 shares. Open cash-equity position; ticker is the traded/reference equity.",
     },
 ]
 
@@ -430,7 +437,6 @@ def seed(db_path: str = "data/quantedge.db"):
 
     print(f"✅ {len(TRADES)} trades chargés en base.")
     print("   Dont 2 positions ouvertes : Netflix (NFLX) et Aon (AON).")
-    print("   Note : PayPal x1 (-0.25€) exclu — stop loss sur frais cachés, non représentatif.")
 
 
 if __name__ == "__main__":

@@ -8,6 +8,8 @@ data/
 *.db
 
 # Python
+.venv/
+.pytest_cache/
 __pycache__/
 *.pyc
 *.pyo
@@ -17,3 +19,22 @@ __pycache__/
 .DS_Store
 .vscode/
 .idea/
+
+# Local launch/session files
+.Rhistory
+*.command
+
+.coverage
+htmlcov/
+*.zip
+*.patch
+
+# Local audit/remediation notes
+CHANGES_AUDIT*.md
+QUANTEDGE_*_REMEDIATION.md
+
+__MACOSX/
+*.pem
+*.key
+*.p12
+*.pfx
