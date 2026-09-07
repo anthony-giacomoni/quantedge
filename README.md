@@ -99,8 +99,7 @@ The regression suite covers XIRR and product reconciliation, malformed DCA workb
 five-session return semantics, EODHD→yfinance fallback, quote/FX staleness, exchange/currency
 fail-closed behaviour, ETF/equity eligibility, NaN/inf handling, listing-calendar selection,
 Claude provenance/guardrails, provider 403/429 cooldown behaviour, official-calendar/yfinance cache
-idempotence and the bundled trade seed. GitHub Actions
-runs the suite on Python 3.11 and 3.12 and also executes a public-repository privacy/secrets check.
+idempotence and the bundled trade seed.
 
 ## Project structure
 
