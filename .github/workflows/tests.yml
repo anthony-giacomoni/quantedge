@@ -18,9 +18,9 @@ jobs:
           cache: pip
       - run: pip install -r requirements-dev.txt
       - run: pip check
-      - run: python -m compileall -q .
-      # Validate the clean checkout before pytest/coverage create local cache artifacts.
+      # Validate the clean checkout before compileall/pytest/coverage create cache artifacts.
       - run: python scripts/validate_public_repo.py .
+      - run: python -m compileall -q .
       - run: pytest -q
       - run: coverage run --source=modules,utils,config,refresh_universe -m pytest -q
       - run: coverage report --fail-under=70
