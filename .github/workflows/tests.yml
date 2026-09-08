@@ -1,0 +1,29 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: pip check
+      - run: python -m compileall -q .
+      # Validate the clean checkout before pytest/coverage create local cache artifacts.
+      - run: python scripts/validate_public_repo.py .
+      - run: pytest -q
+      - run: coverage run --source=modules,utils,config,refresh_universe -m pytest -q
+      - run: coverage report --fail-under=70
+      # Build the distributable from an allowlist and validate that exact exported tree.
+      - run: python scripts/build_public_release.py /tmp/quantedge_public
+      - run: python /tmp/quantedge_public/scripts/validate_public_repo.py /tmp/quantedge_public
