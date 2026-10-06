@@ -43,6 +43,9 @@ def test_staleness_is_per_ticker(monkeypatch):
             return {"close": 200, "timestamp": fresh_ts}
         return None
 
+    fixed_now = datetime(2026,9,7,15,0,tzinfo=timezone.utc)
+    real_stale = eodhd.is_market_timestamp_stale
+    monkeypatch.setattr(eodhd, "is_market_timestamp_stale", lambda cal, stamp, **kw: real_stale(cal, stamp, now=fixed_now, **kw))
     monkeypatch.setattr(eodhd, "_get", fake_get)
     q1 = eodhd.get_quote("NFLX")
     q2 = eodhd.get_quote("AON")

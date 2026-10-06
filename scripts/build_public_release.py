@@ -24,6 +24,7 @@ ROOT_FILES = {
     "refresh_universe.py",
     "requirements.txt",
     "requirements-dev.txt",
+    "LICENSE",
 }
 
 EXACT_FILES = {

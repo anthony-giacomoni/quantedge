@@ -84,7 +84,7 @@ def test_earnings_403_falls_back_to_yfinance(monkeypatch):
 
 def test_recent_headline_is_not_relabelled_as_future_event(monkeypatch):
     monkeypatch.setattr(event_data.eodhd, "get_news", lambda *a, **k: [
-        {"date": "2026-09-06T10:00:00Z", "title": "Company comments on demand", "link": "https://example.com"}
+        {"date": (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%dT10:00:00Z"), "title": "Company comments on demand", "link": "https://example.com"}
     ])
     monkeypatch.setattr(event_data.eodhd, "LAST_ERROR", None)
     out = event_data.get_recent_news(["NFLX"])

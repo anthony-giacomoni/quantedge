@@ -1,7 +1,7 @@
 # QuantEdge — Trading & Market Intelligence Dashboard
 
 QuantEdge is a personal finance/data-engineering project built to track a strategy-tagged
-real-trade analytics dataset, analyse a long-term DCA portfolio, structure AI-assisted research
+personal trade analytics dataset, analyse a long-term DCA portfolio, structure AI-assisted research
 notes, and monitor source-labelled upcoming market catalysts.
 
 It is a research dashboard, not an execution engine and not a production
@@ -128,7 +128,7 @@ quantedge/
 
 ## Strategy-tagged trade dataset in the bundled seed
 
-27 manually curated strategy-tagged samples from **26 May 2025** onward: 25 closed + 2 open. Descriptive statistics of this selected dataset are 24 wins + 1 loss on closed samples, €2,210.61 realised P&L, 96.0% dataset win rate, 24.08x dataset profit factor and a 13.0-day average holding period. These are dataset summaries, not complete-account performance claims.
+27 manually curated strategy-tagged samples from **26 May 2025** onward: 25 closed + 2 open. The dataset is there to exercise the analytics. It is not a performance claim and not a complete-account record.
 
 Realised P&L values are stored from the broker/trade record. For historical rows, `ticker` is the reference/underlying symbol used for market analytics and recorded entry/exit marks are broker-recorded fields; they are not asserted to be exchange executions in that reference symbol. Some rows represent leveraged/wrapper exposure. Closed P&L is therefore not reconstructed from reference-ticker price moves. For the two current open cash-equity positions, the recorded entry price and invested
 amount are broker base-currency (EUR) values. The latest market quote is converted to EUR first,

@@ -14,6 +14,9 @@ def test_eodhd_quote_normalizes_unix_timestamp(monkeypatch):
     from datetime import datetime, timezone
     # Friday 4 Sep is the latest NYSE session before Labor Day Monday 7 Sep 2026.
     ts=int(datetime(2026,9,4,20,0,tzinfo=timezone.utc).timestamp())
+    fixed_now = datetime(2026,9,7,15,0,tzinfo=timezone.utc)
+    real_stale = eodhd.is_market_timestamp_stale
+    monkeypatch.setattr(eodhd, "is_market_timestamp_stale", lambda cal, stamp, **kw: real_stale(cal, stamp, now=fixed_now, **kw))
     monkeypatch.setattr(eodhd, "_get", lambda endpoint, params=None: {"close":100.0,"timestamp":ts})
     q=eodhd.get_quote("AAPL")
     assert isinstance(q["timestamp"],str) and "T" in q["timestamp"]
