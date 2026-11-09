@@ -219,6 +219,12 @@ if page == "Trading":
             unsafe_allow_html=True,
         )
 
+    st.caption(
+        "Selected, non-exhaustive trade sample — not a verified track record. "
+        "Win rate, closed P&L and profit factor describe only these manually "
+        "curated trades, not complete account performance."
+    )
+
     st.divider()
 
     # ── Statistiques détaillées ───────────────────────────────
