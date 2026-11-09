@@ -37,7 +37,7 @@ def test_yfinance_daily_bar_uses_session_label_outside_market_hours(monkeypatch)
     )
     monkeypatch.setattr(
         md,
-        "is_ticker_market_open",
+        "is_ticker_session_in_progress",
         lambda ticker: False,
     )
 
@@ -95,7 +95,7 @@ def test_yfinance_daily_bar_fails_closed_while_market_is_open(monkeypatch):
     )
     monkeypatch.setattr(
         md,
-        "is_ticker_market_open",
+        "is_ticker_session_in_progress",
         lambda ticker: True,
     )
     monkeypatch.setattr(
