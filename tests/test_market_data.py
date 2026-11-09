@@ -290,7 +290,7 @@ def test_future_yfinance_daily_session_is_marked_stale(monkeypatch):
     )
     monkeypatch.setattr(
         market_data,
-        "is_ticker_market_open",
+        "is_ticker_session_in_progress",
         lambda ticker: False,
     )
 
